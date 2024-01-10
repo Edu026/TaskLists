@@ -37,7 +37,14 @@ function init() {
 }
 
 function addTask() {
-    var newelem = $("<li>new element</li>");
+    var newelem = $("<li>new element <button>edit</button> <button class='removeTask'>X</button></li>");
     $("ul").append( newelem );
     $("ul").listview("refresh");
+    $(".removeTask").click(removeTask);
+}
+
+function removeTask (e)
+{
+    var caller = e.target;
+    $(caller).parent().remove();
 }
