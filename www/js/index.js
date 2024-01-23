@@ -13,10 +13,11 @@ function init() {
 
 function addTask() {
     var text = window.prompt("TASK NAME?");
-    var newelem = $("<li>" + text + "<button>edit</button> <button class='removeTask'>X</button></li>");
+    var newelem = $("<li>" + text + "<button class='editTask'>edit</button> <button class='removeTask'>X</button></li>");
     $("ul").append(newelem);
-    $("ul").listview("refresh");
     $(".removeTask").click(removeTask);
+    $(".editTask").click(editTask);
+    $("ul").listview("refresh");
 
     saveListToLocalStorage(); // Guardar la lista en el localStorage después de agregar un elemento
 }
@@ -27,10 +28,21 @@ function removeTask(e) {
     saveListToLocalStorage(); // Guardar la lista en el localStorage después de eliminar un elemento
 }
 
-function editTask(e){
+function editTask(e) {
     var caller = e.target;
-    
+    var liElement = $(caller).parent();
+    var currentText = liElement.text().trim();
+    var newText = window.prompt("Edit Task:", currentText);
+
+    if (newText !== null) {
+        liElement.html(newText + "<button class='editTask'>edit</button> <button class='removeTask'>X</button>");
+        saveListToLocalStorage(); // Guardar la lista en el localStorage después de editar un elemento
+        $(".removeTask").click(removeTask); // Volver a vincular el evento después de cargar la lista
+        $(".editTask").click(editTask); // Volver a vincular el evento de editar después de cargar la lista
+
+    }
 }
+
 
 function saveListToLocalStorage() {
     // Obtener la lista actual y guardarla en el localStorage
@@ -44,5 +56,6 @@ function loadListFromLocalStorage() {
     if (storedList) {
         $("ul").html(storedList);
         $(".removeTask").click(removeTask); // Volver a vincular el evento después de cargar la lista
+        $(".editTask").click(editTask); // Volver a vincular el evento de editar después de cargar la lista
     }
 }
