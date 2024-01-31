@@ -26,12 +26,36 @@ class AddTaskTest extends BaseTest
         await prompt.accept();
         await this.driver.sleep(1000);
 
+        await this.driver.findElement(By.xpath("//button[text()='+']")).click();
+
+        // el prompt pel text de la tasca es tracta igual que un alert en Selenium
+        await this.driver.wait(until.alertIsPresent(),2000,"ERROR TEST: el botó '+' d'afegir tasca ha d'obrir un prompt.");
+        prompt = await this.driver.switchTo().alert();
+        // afegim el text de la tasca i acceptem
+        var taskText2 = "lelele";
+        prompt.sendKeys(taskText2);
+        await this.driver.sleep(1000);
+        await prompt.accept();
+        await this.driver.sleep(1000);
+
+        await this.driver.findElement(By.xpath("//button[text()='+']")).click();
+
+        // el prompt pel text de la tasca es tracta igual que un alert en Selenium
+        await this.driver.wait(until.alertIsPresent(),2000,"ERROR TEST: el botó '+' d'afegir tasca ha d'obrir un prompt.");
+        prompt = await this.driver.switchTo().alert();
+        // afegim el text de la tasca i acceptem
+        var taskText3 = "lilili";
+        prompt.sendKeys(taskText3);
+        await this.driver.sleep(1000);
+        await prompt.accept();
+        await this.driver.sleep(1000);
+
         // eliminem l'element
 
-        await this.driver.findElement(By.xpath("//button[text()='X']")).click();
+        await this.driver.findElement(By.xpath("//li[text()= '"+taskText2+"']/button[text()='X']")).click();
         // checkejem tasca
         try{
-            await this.driver.findElement(By.xpath("//li[text()='"+taskText+"']")).click();
+            await this.driver.findElement(By.xpath("//li[text()='"+taskText2+"']")).click();
             console.log("El elemento no se ha eliminado");
         }catch(error){
             console.log("TEST OK");
